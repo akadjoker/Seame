@@ -1,4 +1,4 @@
-# OLED Display Samples for SEA:ME Program
+# Samples for SEA:ME Program
 
 This repository contains sample implementations for OLED display programming, developed as part of the SEA:ME (Software Engineering Automotive & Mobility Ecosystems) program.
 

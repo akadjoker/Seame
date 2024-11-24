@@ -136,6 +136,19 @@ class SSD1306_Simulator:
         if 0 <= x < self.width and 0 <= y < self.height:
             self.buffer[y][x] = color
     
+
+
+    def blit(self, buffer, x=0, y=0):
+            buffer_height = len(buffer)
+            buffer_width = len(buffer[0])
+            
+            for by in range(buffer_height):
+                for bx in range(buffer_width):
+                    dx = x + bx
+                    dy = y + by
+                    if 0 <= dx < self.width and 0 <= dy < self.height:
+                        self.buffer[dy][dx] = buffer[by][bx]
+
     def draw_char(self, x, y, char, scale=1):
         if char in FONT_8X8:
             char_data = FONT_8X8[char]
@@ -161,6 +174,175 @@ class SSD1306_Simulator:
             self.draw_char(cursor_x, y, char, scale)
             cursor_x += char_spacing
     
+
+    def save_buffer(self, filename, scale=1):
+        save_width = self.width * scale
+        save_height = self.height * scale
+        save_surface = pygame.Surface((save_width, save_height))
+        for y in range(self.height):
+            for x in range(self.width):
+                color = self.WHITE if self.buffer[y][x] else self.BLACK
+                pygame.draw.rect(
+                    save_surface,
+                    color,
+                    (x * scale, y * scale, scale, scale)
+                )
+        pygame.image.save(save_surface, filename)
+
+    def save_image_buffer(self,buffer,  filename, scale=1):
+        height = len(buffer)
+        width = len(buffer[0]) if height > 0 else 0
+      
+        save_width = width * scale
+        save_height = height * scale
+        save_surface = pygame.Surface((save_width, save_height))
+        for y in range(height):
+            for x in range(width):
+                color = self.WHITE if buffer[y][x] else self.BLACK
+                pygame.draw.rect(
+                    save_surface,
+                    color,
+                    (x * scale, y * scale, scale, scale)
+                )
+        pygame.image.save(save_surface, filename)
+
+
+    def load_image(self, image_path):
+        image = pygame.image.load(image_path)
+        width = image.get_width()
+        height = image.get_height()
+        #image = pygame.transform.scale(image, (self.width, self.height))
+        
+        # convertemos para cinza
+        image = pygame.Surface.convert_alpha(image)
+        buffer = [[0 for x in range(width)] for y in range(height)]
+        
+        # Convertemos pixels em (preto e branco)
+        for y in range(height):
+            for x in range(width):
+                # media dos valores RGB
+                pixel = image.get_at((x, y))
+                brightness = (pixel[0] + pixel[1] + pixel[2]) // 3
+                #  usamos o 128 para threshold OBS podemos passar por variavel
+                buffer[y][x] = 1 if brightness > 128 else 0
+                
+        return buffer
+    def load_image_colorkey(self, image_path, colorkey=(255,255,0), threshold=30):
+        """
+        ignorando uma cor específica (com tolerância)
+        colorkey: cor RGB a ser ignorada (default é mangenta A VERIFICAR)
+        threshold: tolerância para a cor (variações)
+        """
+        image = pygame.image.load(image_path)
+
+        width = image.get_width()
+        height = image.get_height() 
+       
+        #image = pygame.transform.scale(image, (self.width, self.height))
+        image = pygame.Surface.convert_alpha(image)
+        
+        buffer = [[0 for x in range(width)] for y in range(height)]
+        
+        for y in range(height):
+            for x in range(width):
+                pixel = image.get_at((x, y))
+                
+                if self._color_range(pixel, colorkey, threshold):
+                    buffer[y][x] = 0  # Transparente"NADA"
+                else:
+                    brightness = (pixel[0] + pixel[1] + pixel[2]) // 3
+                    buffer[y][x] = 1 if brightness > 128 else 0
+                
+        return buffer
+    
+    def _color_range(self, color1, color2, threshold):
+        r1, g1, b1 = color1[:3]
+        r2, g2, b2 = color2
+        
+        return (abs(r1 - r2) <= threshold and 
+                abs(g1 - g2) <= threshold and 
+                abs(b1 - b2) <= threshold)    
+
+
+    def generate_doom_face(self, expression='normal', direction='front'):
+        """
+        Gera um buffer com uma face estilo Doom
+        
+        Args:
+            expression: 'normal', 'angry', 'smile', 'hurt'
+            direction: 'front', 'left', 'right'
+        """
+        # Tamanho da face (32x32 pixels)
+        face_size = 32
+        buffer = [[0 for x in range(face_size)] for y in range(face_size)]
+        
+        # Função auxiliar para desenhar pixels
+        def draw_pixels(pixels):
+            for x, y in pixels:
+                if 0 <= x < face_size and 0 <= y < face_size:
+                    buffer[y][x] = 1
+
+        # Desenha o contorno da cabeça
+        head_contour = [(x, 0) for x in range(8, 24)] + \
+                      [(x, 31) for x in range(8, 24)] + \
+                      [(8, y) for y in range(32)] + \
+                      [(23, y) for y in range(32)]
+        draw_pixels(head_contour)
+
+        # Desenha os olhos baseado na direção
+        left_eye_x = 12 if direction == 'left' else (14 if direction == 'right' else 13)
+        right_eye_x = 18 if direction == 'left' else (20 if direction == 'right' else 19)
+        
+        # Olhos normais
+        if expression != 'hurt':
+            # Olho esquerdo
+            for y in range(10, 14):
+                for x in range(left_eye_x, left_eye_x + 3):
+                    buffer[y][x] = 1
+                    
+            # Olho direito
+            for y in range(10, 14):
+                for x in range(right_eye_x, right_eye_x + 3):
+                    buffer[y][x] = 1
+
+        # Olhos machucados
+        if expression == 'hurt':
+            # Olhos em X
+            for i in range(3):
+                buffer[10+i][left_eye_x+i] = 1
+                buffer[10+i][left_eye_x+2-i] = 1
+                buffer[10+i][right_eye_x+i] = 1
+                buffer[10+i][right_eye_x+2-i] = 1
+
+        # Boca 
+        if expression == 'normal':
+            for x in range(12, 20):
+                buffer[22][x] = 1
+        elif expression == 'angry':
+            for i in range(4):
+                buffer[20+i][12+i] = 1
+                buffer[20+i][19-i] = 1
+        elif expression == 'smile':
+            for i in range(4):
+                buffer[22-i][12+i] = 1
+                buffer[22-i][19-i] = 1
+        elif expression == 'hurt':
+            for i in range(5):
+                buffer[24][13+i] = 1
+
+        if expression == 'angry':
+            for i in range(3):
+                buffer[8][11+i] = 1
+                buffer[8][18+i] = 1
+                buffer[9][12+i] = 1
+                buffer[9][19+i] = 1
+
+        return buffer
+
+    def draw_doom_face(self, x, y, expression='normal', direction='front'):
+        face_buffer = self.generate_doom_face(expression, direction)
+        self.blit(face_buffer, x, y)
+
     def update(self):
         for y in range(self.height):
             for x in range(self.width):
@@ -181,14 +363,54 @@ class SSD1306_Simulator:
 if __name__ == "__main__":
     display = SSD1306_Simulator()
     
-    display.draw_text(0, 0, "Team06!", 2)
+    display.draw_text(10, 0, "Team06!", 2)
     display.draw_text(0, 20, "SEA:ME", 1)
+    display.draw_text(60, 20, "42Porto", 1)
+    custom_buffer = [
+        [1,1,1,1,0,0,0,1],
+        [1,0,0,1,0,0,0,1],
+        [1,0,0,1,0,0,0,1],
+        [1,1,1,1,0,0,1,0],
+    ]
+
+    display.save_image_buffer(custom_buffer,"custom_buffer.bmp", scale=1)
+    
+    #display.blit(custom_buffer,5,5)
+
+    # running = True
+    # while running:
+    #     display.update()
+    #     if display.check_quit():
+    #         running = False
+    #     time.sleep(0.1)
+    expressions = [
+        ('normal', 'front'),
+        ('normal', 'left'),
+        ('normal', 'right'),
+        ('angry', 'front'),
+        ('smile', 'front'),
+        ('hurt', 'front')
+    ]
     
     running = True
+    frame = 0
     while running:
+        display.clear()
+
+        FPS = 60 # lento , 30 normal
+        
+        # expressão atual
+        expression, direction = expressions[frame // FPS]
+        
+
+        display.draw_doom_face(0, 0, expression, direction)
+        
+        # Atualiza o frame
+        frame = (frame + 1) % (len(expressions) * FPS)
+        #frame = 5 * FPS
+        
         display.update()
         if display.check_quit():
             running = False
-        time.sleep(0.1)
-    
+        time.sleep(0.033)  # Aproximadamente 30 FPS    
     pygame.quit()

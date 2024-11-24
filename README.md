@@ -71,6 +71,16 @@ display.draw_circle(64, 16, 10, fill=True)
 display.update()
 ```
 
+## Screens
+
+![team 6](images/img1.png)
+![smile ](images/img2.png)
+![smile](images/img3.png)
+![smile](images/img4.png)
+![smile](images/img5.png)
+
+
+
 ## Educational Context
 
 This project is part of the SEA:ME program, which focuses on:

@@ -1,0 +1,112 @@
+Controladores PWM duplos PCA9685
+Driver de motor DRV8870
+Sensor de corrente INA219
+Display OLED SSD1306
+MOSFETs AO4407A para controle
+
+Header1 e Header2 (3x2 pinos cada):
+1. 3V3
+2. 5V
+3. SDA
+4. 5V
+5. SCL
+6. GND
+
+3V3
+5V
+SDA
+5V
+SCL
+GND
+
+
+https://github.com/kplindegaard/smbus2https://github.com/kplindegaard/smbus2
+
+
+
+PCA9685 (PCA1 e PCA2):
+
+Temos dois PCA9685 no sistema
+PCA1 parece ser o principal controlador
+Os pinos relevantes são:
+
+LED0 a LED15 são os canais de saída PWM
+
+
+
+
+DRV8870 (DRV1 e DRV2):
+
+Temos dois drivers DRV8870
+Cada um tem:
+
+IN1 e IN2 para controle
+OUT1 e OUT2 para saída do motor
+
+
+
+Motores (via DRV8870):
+
+Motor 1 (DRV1):
+
+IN1: Canal 0 (LED0) do PCA9685_1
+IN2: Canal 1 (LED1) do PCA9685_1
+
+
+Motor 2 (DRV2):
+
+IN1: Canal 2 (LED2) do PCA9685_1
+IN2: Canal 3 (LED3) do PCA9685_1
+
+    Movimento para Frente:
+
+        IN1 = LOW (0)
+        IN2 = PWM (valor variável)
+
+
+    Movimento para Trás:
+
+        IN1 = PWM (valor variável)
+        IN2 = LOW (0)
+
+
+    Freio (Brake):
+
+        IN1 = HIGH (4095)
+        IN2 = HIGH (4095)
+
+
+    Parado (Coast):
+
+        IN1 = LOW (0)
+        IN2 = LOW (0)
+
+IN1  |  IN2  | VREF  |  Motor
+-----|-------|-------|------------
+ 0   |   0   |   x   |  Coast (Parado,Release)
+ 1   |   0   |  PWM  |  Forward (Frente)
+ 0   |   1   |  PWM  |  Reverse (Trás)
+ 1   |   1   |   x   |  Brake (Freio)
+
+Servo:
+
+Canal 4 (LED4) do PCA9685_1
+
+
+Endereços I2C:
+
+PCA9685_1: 0x40 (endereço padrão)
+PCA9685_2: 0x41
+
+
+
+
+# activar
+sudo raspi-config
+# Interface Options -> I2C -> Enable
+
+# ferramentas i2c
+sudo apt-get install i2c-tools
+
+#  scan de chips I2C
+sudo i2cdetect -y 1   #  1 para Raspberry Pi 2/3/4,  0 para Pi original

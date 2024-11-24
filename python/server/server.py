@@ -86,7 +86,7 @@ class MotorController:
     def move_forward(self, speed: float, duration: float):
         self.current_speed = speed
         self.is_moving = True
-        logging.info(f"Movendo para frente: velocidade={speed}, duração={duration}")
+        logging.info(f"Move frente: velocidade={speed}, duração={duration}")
         if duration > 0:
             threading.Timer(duration, self.stop).start()
     
@@ -106,7 +106,7 @@ class SensorManager:
         logging.info("Sensor Manager inicializado")
     
     def read_all(self) -> dict:
-        # Simula leitura de sensores
+        # simulamos leitura de sensores
         self.last_reading['temperature'] += (random.random() - 0.5)
         self.last_reading['humidity'] += (random.random() - 0.5)
         self.last_reading['distance'] += (random.random() - 0.5) * 5
@@ -205,7 +205,7 @@ class PiServer:
                 # Coloca mensagem na fila para processamento
                 self.message_queue.put((sock, data))
             else:
-                # Cliente desconectou
+                # cliente saiu
                 self._remove_client(sock)
         except ConnectionError:
             self._remove_client(sock)
@@ -235,7 +235,7 @@ class PiServer:
                 
     def _monitor_system(self):
         while self.running:
-            # Monitora temperatura do sistema
+            # Monitora temperatura do sistema ??? TESTAR
             try:
                 with open('/sys/class/thermal/thermal_zone0/temp') as f:
                     temp = float(f.read()) / 1000.0
@@ -245,7 +245,7 @@ class PiServer:
             except:
                 pass
             
-            # Monitora memória
+            # Monitora memória TESTAR
             try:
                 with open('/proc/meminfo') as f:
                     mem_total = 0

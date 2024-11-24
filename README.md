@@ -71,13 +71,6 @@ display.draw_circle(64, 16, 10, fill=True)
 display.update()
 ```
 
-## Screens
-
-![team 6](images/img1.png)
-![smile ](images/img2.png)
-![smile](images/img3.png)
-![smile](images/img4.png)
-![smile](images/img5.png)
 
 
 
@@ -105,4 +98,12 @@ The Software Engineering Automotive & Mobility Ecosystems (SEA:ME) program is de
 
 
 
+## Screens
+
+![team 6](images/img1.png)
+![smile ](images/img2.png)
+![smile](images/img3.png)
+![smile](images/img4.png)
+![smile](images/img5.png)
+![doom](images/img7.png)
 

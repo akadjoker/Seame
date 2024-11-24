@@ -207,11 +207,17 @@ class SSD1306_Simulator:
         pygame.image.save(save_surface, filename)
 
 
-    def load_image(self, image_path):
+    def load_image(self, image_path,width=None, height=None):
         image = pygame.image.load(image_path)
-        width = image.get_width()
-        height = image.get_height()
+        
+        if width and height:
+            image = pygame.transform.scale(image, (width, height))
+        else:
+            width = image.get_width()
+            height = image.get_height()
+
         #image = pygame.transform.scale(image, (self.width, self.height))
+        
         
         # convertemos para cinza
         image = pygame.Surface.convert_alpha(image)
@@ -359,8 +365,9 @@ class SSD1306_Simulator:
             if event.type == pygame.QUIT:
                 return True
         return False
+    
 
-if __name__ == "__main__":
+def teste_text():
     display = SSD1306_Simulator()
     
     display.draw_text(10, 0, "Team06!", 2)
@@ -375,14 +382,21 @@ if __name__ == "__main__":
 
     display.save_image_buffer(custom_buffer,"custom_buffer.bmp", scale=1)
     
-    #display.blit(custom_buffer,5,5)
+    display.blit(custom_buffer,5,5)
 
-    # running = True
-    # while running:
-    #     display.update()
-    #     if display.check_quit():
-    #         running = False
-    #     time.sleep(0.1)
+    running = True
+    while running:
+        display.update()
+        if display.check_quit():
+            running = False
+        time.sleep(0.1)
+
+    pygame.quit()
+
+def teste_faces():
+    display = SSD1306_Simulator()
+    
+  
     expressions = [
         ('normal', 'front'),
         ('normal', 'left'),
@@ -414,3 +428,190 @@ if __name__ == "__main__":
             running = False
         time.sleep(0.033)  # Aproximadamente 30 FPS    
     pygame.quit()
+
+def teste_buffer():
+    display = SSD1306_Simulator()
+    
+    custom_buffer = [
+        [1,1,1,1,0,0,0,1],
+        [1,0,0,1,0,0,0,1],
+        [1,0,0,1,0,0,0,1],
+        [1,1,1,1,0,0,1,0],
+    ]
+
+    display.save_image_buffer(custom_buffer,"custom_buffer.bmp", scale=1)
+    
+    display.blit(custom_buffer,5,5)
+
+    running = True
+    while running:
+        display.update()
+        if display.check_quit():
+            running = False
+        time.sleep(0.1)
+
+    pygame.quit()
+
+
+RETRO_FACES = {
+    'face1': [  # Normal face (top left)
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [1,1,1,0,0,1,1,1,1,0,0,1,1,1],
+        [1,1,1,0,0,1,1,1,1,0,0,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,0,0,0,0,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+    ],
+    'face2': [  # Serious face (top middle)
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [1,1,1,0,0,1,1,1,1,0,0,1,1,1],
+        [1,1,1,0,0,1,1,1,1,0,0,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,0,0,0,0,0,0,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+    ],
+    'face3': [  # Concerned face (top right)
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [1,1,1,0,0,1,1,1,1,0,0,1,1,1],
+        [1,1,1,0,0,1,1,1,1,0,0,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,0,0,0,0,1,1,1,1,1],
+        [1,1,1,1,0,0,1,1,0,0,1,1,1,1],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+    ],
+    'face4': [  # Angry face (bottom left)
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [1,1,0,0,1,1,1,1,1,1,0,0,1,1],
+        [1,1,1,0,0,1,1,1,1,0,0,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,0,0,0,0,1,1,1,1,1],
+        [1,1,1,1,0,0,1,1,0,0,1,1,1,1],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+    ],
+    'face5': [  # Shouting face (bottom middle)
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [1,1,0,0,1,1,1,1,1,1,0,0,1,1],
+        [1,1,1,0,0,1,1,1,1,0,0,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,0,0,0,0,1,1,1,1,1],
+        [1,1,1,0,0,0,1,1,0,0,0,1,1,1],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+    ],
+    'face6': [  # Intense face (bottom right)
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [1,1,0,0,1,1,1,1,1,1,0,0,1,1],
+        [1,1,1,0,0,1,1,1,1,0,0,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,0,0,0,0,0,0,1,1,1,1],
+        [1,1,1,0,0,1,1,1,1,0,0,1,1,1],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+    ]
+}
+
+class RetroFaceDemo:
+    def __init__(self, display):
+        self.display = display
+    def draw_face(self, face_name, x, y):
+        if face_name in RETRO_FACES:
+            self.display.blit(RETRO_FACES[face_name], x, y)
+            
+    def demo_all_faces(self):
+        # grid 2x3
+        positions = [
+            (0, 0), (20, 0), (40, 0),    # Top row
+            (0, 15), (20, 15), (40, 15)  # Bottom row
+        ]
+        
+        self.display.clear()
+        
+        for face_name, pos in zip(RETRO_FACES.keys(), positions):
+            self.draw_face(face_name, pos[0], pos[1])
+            
+        self.display.update()
+            
+    def animate_faces(self):
+        faces = list(RETRO_FACES.keys())
+        frame = 0
+        
+        while True:
+            self.display.clear()
+            face_name = faces[frame % len(faces)]
+            self.draw_face(face_name, 10, 10)
+            self.display.update()
+            
+            frame += 1
+            time.sleep(0.5)  # Meio segundo de pausa
+            
+            if self.display.check_quit():
+                break
+
+def teste_doom_face():
+    display = SSD1306_Simulator()
+    demo = RetroFaceDemo(display)
+    demo.demo_all_faces()
+    time.sleep(2)
+    demo.animate_faces()
+    pygame.quit()
+
+def test_real_image():
+    display = SSD1306_Simulator()
+    
+    buffer = display.load_image("../../assets/face.bmp",30,30)
+    display.save_image_buffer(buffer,"custom_buffer.bmp", scale=1)
+    
+    display.blit(buffer,40,1)
+
+    running = True
+    while running:
+        display.update()
+        if display.check_quit():
+            running = False
+        time.sleep(0.1)
+
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    #teste_text()
+    #teste_faces()
+    #teste_buffer()
+    #teste_doom_face()
+    test_real_image()

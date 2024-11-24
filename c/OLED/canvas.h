@@ -19,6 +19,13 @@ typedef struct
 
 
 Canvas *canvas_init(void);
+
+
+//OBS a memoria retornada precisa ser LIMPA
+uint8_t *load_bmp_to_buffer(const char *filename, int *width, int *height);
+void print_buffer(uint8_t *buffer, int width, int height);
+void generate_header_file(const char *filename, uint8_t *buffer, int width, int height);
+
 void canvas_clear(Canvas *canvas);
 void canvas_update(Canvas *canvas);
 bool canvas_is_running(Canvas *canvas);
@@ -29,6 +36,7 @@ void canvas_pixel(Canvas *canvas, int x, int y);
 void canvas_line(Canvas *canvas, int x1, int y1, int x2, int y2);
 void canvas_rect(Canvas *canvas, int x, int y, int w, int h, bool fill);
 void canvas_circle(Canvas *canvas, int x, int y, int r, bool fill);
+void canvas_blt(Canvas *canvas, char* buffer, int x, int y, int w, int h);
 
 
 void canvas_char(Canvas *canvas, int x, int y, char c, int scale);

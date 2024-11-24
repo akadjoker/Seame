@@ -105,5 +105,5 @@ The Software Engineering Automotive & Mobility Ecosystems (SEA:ME) program is de
 ![smile](images/img3.png)
 ![smile](images/img4.png)
 ![smile](images/img5.png)
-![doom](images/img7.png)
+![doom](images/img6.png)
 

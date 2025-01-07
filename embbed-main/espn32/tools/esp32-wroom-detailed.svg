@@ -1,0 +1,76 @@
+<svg viewBox="0 0 500 700" xmlns="http://www.w3.org/2000/svg">
+    <!-- Placa base -->
+    <rect x="100" y="50" width="300" height="600" fill="#1a4d2e" rx="10"/>
+    
+    <!-- Módulo ESP32 -->
+    <rect x="150" y="150" width="200" height="300" fill="#808080"/>
+    <rect x="160" y="160" width="180" height="280" fill="#303030"/>
+    
+    <!-- Antena PCB -->
+    <path d="M300 160 L330 160 L330 240 L300 240" fill="none" stroke="#c0c0c0" stroke-width="2"/>
+    
+    <!-- Pinos lado esquerdo -->
+    <g>
+        <!-- Pinos 1-19 -->
+        {[...Array(19)].map((_, i) => `
+            <rect x="90" y="${80 + i * 28}" width="10" height="5" fill="silver"/>
+            <circle cx="95" cy="${82.5 + i * 28}" r="8" fill="none" stroke="white" stroke-width="1"/>
+            <text x="105" y="${86 + i * 28}" fill="white" font-size="12" text-anchor="start">${i + 1}</text>
+        `).join('')}
+        
+        <!-- Labels esquerda -->
+        <text x="125" y="86" fill="white" font-size="12">EN</text>
+        <text x="125" y="114" fill="white" font-size="12">3V3</text>
+        <text x="125" y="142" fill="white" font-size="12">IO34</text>
+        <text x="125" y="170" fill="white" font-size="12">IO35</text>
+        <text x="125" y="198" fill="white" font-size="12">IO32</text>
+        <text x="125" y="226" fill="white" font-size="12">IO33</text>
+        <text x="125" y="254" fill="white" font-size="12">IO25</text>
+        <text x="125" y="282" fill="white" font-size="12">IO26</text>
+        <text x="125" y="310" fill="white" font-size="12">IO27</text>
+        <text x="125" y="338" fill="white" font-size="12">IO14</text>
+        <text x="125" y="366" fill="white" font-size="12">IO12</text>
+        <text x="125" y="394" fill="white" font-size="12">IO13</text>
+        <text x="125" y="422" fill="white" font-size="12">GND</text>
+        <text x="125" y="450" fill="white" font-size="12">5V</text>
+        <text x="125" y="478" fill="white" font-size="12">3V3</text>
+        <text x="125" y="506" fill="white" font-size="12">NC</text>
+        <text x="125" y="534" fill="white" font-size="12">NC</text>
+        <text x="125" y="562" fill="white" font-size="12">NC</text>
+        <text x="125" y="590" fill="white" font-size="12">NC</text>
+    </g>
+    
+    <!-- Pinos lado direito -->
+    <g>
+        <!-- Pinos 20-38 -->
+        {[...Array(19)].map((_, i) => `
+            <rect x="400" y="${80 + i * 28}" width="10" height="5" fill="silver"/>
+            <circle cx="405" cy="${82.5 + i * 28}" r="8" fill="none" stroke="white" stroke-width="1"/>
+            <text x="385" y="${86 + i * 28}" fill="white" font-size="12" text-anchor="end">${38 - i}</text>
+        `).join('')}
+        
+        <!-- Labels direita -->
+        <text x="375" y="86" fill="white" font-size="12">IO23</text>
+        <text x="375" y="114" fill="white" font-size="12">IO22</text>
+        <text x="375" y="142" fill="white" font-size="12">IO1</text>
+        <text x="375" y="170" fill="white" font-size="12">IO3</text>
+        <text x="375" y="198" fill="white" font-size="12">IO21</text>
+        <text x="375" y="226" fill="white" font-size="12">IO19</text>
+        <text x="375" y="254" fill="white" font-size="12">IO18</text>
+        <text x="375" y="282" fill="white" font-size="12">IO5</text>
+        <text x="375" y="310" fill="white" font-size="12">IO17</text>
+        <text x="375" y="338" fill="white" font-size="12">IO16</text>
+        <text x="375" y="366" fill="white" font-size="12">IO4</text>
+        <text x="375" y="394" fill="white" font-size="12">IO0</text>
+        <text x="375" y="422" fill="white" font-size="12">IO2</text>
+        <text x="375" y="450" fill="white" font-size="12">IO15</text>
+        <text x="375" y="478" fill="white" font-size="12">IO8</text>
+        <text x="375" y="506" fill="white" font-size="12">IO7</text>
+        <text x="375" y="534" fill="white" font-size="12">NC</text>
+        <text x="375" y="562" fill="white" font-size="12">NC</text>
+        <text x="375" y="590" fill="white" font-size="12">NC</text>
+    </g>
+    
+    <!-- Texto -->
+    <text x="250" y="300" fill="white" font-size="14" font-family="Arial" text-anchor="middle">ESP32-WROOM</text>
+</svg>

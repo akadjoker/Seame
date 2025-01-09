@@ -95,8 +95,8 @@ Canal 4 (LED4) do PCA9685_1
 
 Endereços I2C:
 
-PCA9685_1: 0x40 (endereço padrão)
-PCA9685_2: 0x41
+PCA9685_1: 0x40 servo
+PCA9685_2: 0x60 motor dc "2"
 
 
 
@@ -110,3 +110,8 @@ sudo apt-get install i2c-tools
 
 #  scan de chips I2C
 sudo i2cdetect -y 1   #  1 para Raspberry Pi 2/3/4,  0 para Pi original
+
+
+
+CAN:
+sudo ip link set can0 up type can bitrate 500000

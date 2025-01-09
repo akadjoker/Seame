@@ -595,6 +595,7 @@ def test_real_image():
     display = SSD1306_Simulator()
     
     buffer = display.load_image("../../assets/face.bmp",30,30)
+    print(buffer)
     display.save_image_buffer(buffer,"custom_buffer.bmp", scale=1)
     
     display.blit(buffer,40,1)

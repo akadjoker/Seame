@@ -1,0 +1,32 @@
+Detecting chip type... ESP32
+Chip is ESP32-D0WD-V3 (revision v3.1)
+Features: WiFi, BT, Dual Core, 240MHz, VRef calibration in efuse, Coding Scheme None
+Crystal is 40MHz
+MAC: f0:24:f9:5a:bb:70
+
+fritzing-0.9.5.linux.AMD64
+thoony
+
+
+  +--------------------------+
+  | 1    EN           38  IO23 |
+  | 2    3V3          37  IO22 |
+  | 3    IO34         36  IO1  |
+  | 4    IO35         35  IO3  |
+  | 5    IO32         34  IO21 |
+  | 6    IO33         33  IO19 |
+  | 7    IO25         32  IO18 |
+  | 8    IO26         31  IO5  |
+  | 9    IO27         30  IO17 |
+  | 10   IO14         29  IO16 |
+  | 11   IO12         28  IO4  |
+  | 12   IO13         27  IO0  |
+  | 13   GND          26  IO2  |
+  | 14   5V           25  IO15 |
+  | 15   3V3          24  IO8  |
+  | 16   NC           23  IO7  |
+  | 17   NC           22  NC   |
+  | 18   NC           21  NC   |
+  | 19   NC           20  NC   |
+  +--------------------------+
+
